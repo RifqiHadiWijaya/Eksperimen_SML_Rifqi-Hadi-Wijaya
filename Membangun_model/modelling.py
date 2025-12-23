@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score
 
 mlflow.set_experiment("Fraud No Tuning")
 
-mlflow.autolog()
 
 df = pd.read_csv("Membangun_model/train_fraud.csv")
 X = df.drop(columns=["Fraud_Label"])
@@ -20,10 +19,14 @@ X_train, X_test, y_train, y_test = train_test_split(
 input_example = X_train[0:5]
 
 with mlflow.start_run():
+    n_estimators = 100
+    random_state = 42
+    mlflow.autolog()
+
     model = RandomForestClassifier(
-        n_estimators=100,
+        n_estimators=n_estimators,
         class_weight="balanced",
-        random_state=42
+        random_state=random_state
     )
     model.fit(X_train, y_train)
 
